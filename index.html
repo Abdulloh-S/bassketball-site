@@ -892,7 +892,19 @@ document.getElementById('stats-ov').addEventListener('click',function(e){if(e.ta
 
 /* ══ ADMIN STREAM ══ */
 function loadAStream(){const s=DB.stream;document.getElementById('as-url').value=s.url||'';document.getElementById('as-title').value=s.title||'';document.getElementById('as-status').value=s.status||'off';}
-function saveStreamCfg(){DB.stream={url:document.getElementById('as-url').value.trim(),title:document.getElementById('as-title').value.trim(),status:document.getElementById('as-status').value};sDB();renderLiveBanner();toast('Настройки трансляции сохранены ✓');}
+async function saveStreamCfg(){
+  const url = document.getElementById('as-url').value;
+  const title = document.getElementById('as-title').value;
+  const status = document.getElementById('as-status').value;
+
+  await setDoc(doc(db, "stream", "main"), {
+    url,
+    title,
+    status
+  });
+
+  loadStreamFromDB();
+}
 
 /* ══ INIT ══ */
 renderMatches();renderPlayers();updHero();renderLiveBanner();
