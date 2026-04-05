@@ -959,7 +959,7 @@ window.showToast = function(text, type="success"){
     t.className = "toast";
   }, 2500);
 }
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";;
 import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -971,7 +971,11 @@ const firebaseConfig = {
   appId: "1:55807405730:web:ebcf1e938a1b836c4db1fb"
 };
 
-const app = initializeApp(firebaseConfig);
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+const app = getApps().length
+  ? getApps()[0]
+  : initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 async function loadStreamFromDB(){
