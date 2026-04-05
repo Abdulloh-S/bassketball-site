@@ -329,6 +329,34 @@ select.fi option{background:#112840;}
   .admin-tabs{flex-wrap:wrap;}
   .atab{padding:0 14px;font-size:11px;}
 }
+
+.toast{
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #111;
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 10px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: 0.3s;
+  z-index: 9999;
+  font-size: 14px;
+}
+
+.toast.show{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast.success{
+  background: #16a34a;
+}
+
+.toast.error{
+  background: #dc2626;
+}
 </style>
 </head>
 <body>
@@ -893,18 +921,25 @@ document.getElementById('stats-ov').addEventListener('click',function(e){if(e.ta
 /* ══ ADMIN STREAM ══ */
 function loadAStream(){const s=DB.stream;document.getElementById('as-url').value=s.url||'';document.getElementById('as-title').value=s.title||'';document.getElementById('as-status').value=s.status||'off';}
 async function saveStreamCfg(){
-  const url = document.getElementById('as-url').value;
-  const title = document.getElementById('as-title').value;
-  const status = document.getElementById('as-status').value;
+  try{
+    const url = document.getElementById('as-url').value;
+    const title = document.getElementById('as-title').value;
+    const status = document.getElementById('as-status').value;
 
-  await setDoc(doc(db, "stream", "main"), {
-    url,
-    title,
-    status
-  });
+    await setDoc(doc(db, "stream", "main"), {
+      url,
+      title,
+      status
+    });
 
-  loadStreamFromDB();
-  alert("Стрим обновлён");
+    loadStreamFromDB();
+
+    showToast("Стрим обновлён", "success");
+
+  } catch(e){
+    showToast("Ошибка сохранения", "error");
+    console.error(e);
+  }
 }
 
 /* ══ INIT ══ */
@@ -948,5 +983,6 @@ async function loadStreamFromDB(){
 loadStreamFromDB();
 
 </script>
+<div id="toast" class="toast"></div>
 </body>
 </html>
