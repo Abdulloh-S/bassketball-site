@@ -948,6 +948,17 @@ renderMatches();renderPlayers();updHero();renderLiveBanner();
 </script>
 <script type="module">
 
+window.showToast = function(text, type="success"){
+  const t = document.getElementById("toast");
+  if(!t) return;
+
+  t.textContent = text;
+  t.className = "toast show " + type;
+
+  setTimeout(()=>{
+    t.className = "toast";
+  }, 2500);
+}
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
