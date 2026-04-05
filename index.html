@@ -937,9 +937,9 @@ async function saveStreamCfg(){
     showToast("Стрим обновлён", "success");
 
   } catch(e){
-    showToast("Ошибка сохранения", "error");
-    console.error(e);
-  }
+  console.error("REAL ERROR:", e);
+  showToast(e.message, "error");
+   }
 }
 
 
