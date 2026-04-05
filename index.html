@@ -934,10 +934,10 @@ async function saveStreamCfg(){
 
     loadStreamFromDB();
 
-    showToast("Стрим обновлён", "success");
+    window.showToast("Стрим обновлён", "success");
 
   } catch(e){
-    showToast("Ошибка сохранения", "error");
+    window.showToast("Ошибка сохранения", "error");
     console.error(e);
   }
 }
@@ -992,17 +992,7 @@ async function loadStreamFromDB(){
   }
 }
 
-function showToast(text, type="success"){
-  const t = document.getElementById("toast");
-  if(!t) return;
 
-  t.textContent = text;
-  t.className = "toast show " + type;
-
-  setTimeout(()=>{
-    t.className = "toast";
-  }, 2500);
-}
 loadStreamFromDB();
 
 </script>
