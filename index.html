@@ -942,17 +942,7 @@ async function saveStreamCfg(){
   }
 }
 
-function showToast(text, type="success"){
-  const t = document.getElementById("toast");
-  if(!t) return;
 
-  t.textContent = text;
-  t.className = "toast show " + type;
-
-  setTimeout(()=>{
-    t.className = "toast";
-  }, 2500);
-}
 /* ══ INIT ══ */
 renderMatches();renderPlayers();updHero();renderLiveBanner();
 </script>
@@ -991,6 +981,17 @@ async function loadStreamFromDB(){
   }
 }
 
+function showToast(text, type="success"){
+  const t = document.getElementById("toast");
+  if(!t) return;
+
+  t.textContent = text;
+  t.className = "toast show " + type;
+
+  setTimeout(()=>{
+    t.className = "toast";
+  }, 2500);
+}
 loadStreamFromDB();
 
 </script>
