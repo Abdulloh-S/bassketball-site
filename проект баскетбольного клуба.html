@@ -897,5 +897,43 @@ function saveStreamCfg(){DB.stream={url:document.getElementById('as-url').value.
 /* ══ INIT ══ */
 renderMatches();renderPlayers();updHero();renderLiveBanner();
 </script>
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAXK8UvmUyiczFyVyPyw0857XUwNuyHY9g",
+  authDomain: "bassketball-site-23d1d.firebaseapp.com",
+  projectId: "bassketball-site-23d1d",
+  storageBucket: "bassketball-site-23d1d.firebasestorage.app",
+  messagingSenderId: "55807405730",
+  appId: "1:55807405730:web:ebcf1e938a1b836c4db1fb"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function loadStreamFromDB(){
+  const ref = doc(db, "stream", "main");
+  const snap = await getDoc(ref);
+
+  if(snap.exists()){
+    const data = snap.data();
+
+    if(data.url){
+      applyStream(data.url);
+      document.getElementById('live-name').textContent = data.title || '';
+
+      if(data.status === 'live'){
+        document.getElementById('live-banner').classList.add('on');
+      }
+    }
+  }
+}
+
+loadStreamFromDB();
+
+</script>
 </body>
 </html>
