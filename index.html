@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LIZZARD BC — Official</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   ЦВЕТА: 60% #0D1B2A | 30% #1B4F8A | 10% #E8F4FD
+═══════════════════════════════════════ */
+:root{
+  --deep:#0D1B2A;
+  --blue:#1B4F8A;
+  --light:#E8F4FD;
+  --blue-soft:rgba(27,79,138,.4);
+  --blue-glow:rgba(27,79,138,.55);
+  --light-dim:rgba(232,244,253,.5);
+  --light-faint:rgba(232,244,253,.1);
+  --card:#0f2236;
+  --card2:#112840;
+  --border:rgba(27,79,138,.3);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--deep);font-family:'Rajdhani',sans-serif;color:var(--light);overflow-x:hidden;}
+body::after{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:9997;
+}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  padding:0 56px;height:66px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(13,27,42,.92);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{font-family:'Bebas Neue';font-size:27px;letter-spacing:6px;color:var(--light);display:flex;align-items:baseline;gap:12px;}
+.nav-logo em{font-style:normal;font-size:10px;font-family:'Rajdhani';color:var(--blue);letter-spacing:3px;font-weight:700;}
+.nav-links{display:flex;gap:36px;}
+.nav-links a{color:var(--light-dim);font-size:13px;font-weight:600;text-decoration:none;letter-spacing:3px;text-transform:uppercase;position:relative;transition:.3s;}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--blue);transform:scaleX(0);transition:.3s;transform-origin:left;}
+.nav-links a:hover{color:var(--light);}
+.nav-links a:hover::after{transform:scaleX(1);}
+
+/* HERO */
+#hero{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+  background:radial-gradient(ellipse 70% 55% at 50% 45%,rgba(27,79,138,.2) 0%,transparent 70%),
+             linear-gradient(180deg,#0D1B2A 0%,#0e2035 55%,#0D1B2A 100%);
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(27,79,138,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(27,79,138,.06) 1px,transparent 1px);
+  background-size:64px 64px;animation:grid-drift 25s linear infinite;
+}
+@keyframes grid-drift{to{transform:translateY(64px)}}
+.hero-glow{
+  position:absolute;width:700px;height:700px;left:50%;top:50%;transform:translate(-50%,-55%);
+  background:radial-gradient(circle,rgba(27,79,138,.15) 0%,transparent 70%);
+  animation:gpulse 5s ease-in-out infinite;
+}
+@keyframes gpulse{0%,100%{opacity:.5;transform:translate(-50%,-55%) scale(1)}50%{opacity:1;transform:translate(-50%,-55%) scale(1.1)}}
+.hero-content{text-align:center;position:relative;z-index:2;}
+.hero-eyebrow{font-size:11px;letter-spacing:8px;color:var(--blue);text-transform:uppercase;margin-bottom:28px;opacity:0;animation:fu .7s .2s both;}
+.hero-title{
+  font-family:'Bebas Neue';font-size:clamp(88px,15vw,200px);line-height:.88;letter-spacing:10px;
+  color:var(--light);text-shadow:0 0 80px rgba(27,79,138,.45),0 0 180px rgba(27,79,138,.15);
+  opacity:0;animation:fu .8s .4s both;
+}
+.hero-title span{color:transparent;-webkit-text-stroke:2px rgba(232,244,253,.2);}
+.hero-sub{font-size:15px;letter-spacing:6px;color:var(--light-dim);margin-top:14px;text-transform:uppercase;opacity:0;animation:fu .7s .6s both;}
+.hero-div{width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--blue),transparent);margin:30px auto;opacity:0;animation:fu .7s .7s both;}
+.hero-stats{display:flex;gap:56px;justify-content:center;opacity:0;animation:fu .7s .8s both;}
+.hero-stat-num{font-family:'Orbitron';font-size:38px;font-weight:900;color:var(--light);}
+.hero-stat-label{font-size:10px;letter-spacing:4px;color:var(--blue);text-transform:uppercase;margin-top:4px;}
+.hero-cta{
+  display:inline-block;margin-top:44px;padding:15px 48px;
+  background:var(--blue);color:var(--light);border:none;cursor:pointer;
+  font-family:'Bebas Neue';font-size:19px;letter-spacing:5px;text-decoration:none;
+  clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);
+  transition:.35s;opacity:0;animation:fu .7s 1s both;position:relative;overflow:hidden;
+}
+.hero-cta::before{content:'';position:absolute;inset:0;background:rgba(232,244,253,.08);transform:translateX(-100%);transition:.4s;}
+.hero-cta:hover{box-shadow:0 0 40px var(--blue-glow);transform:translateY(-2px);}
+.hero-cta:hover::before{transform:translateX(0);}
+@keyframes fu{0%{opacity:0;transform:translateY(22px)}100%{opacity:1;transform:translateY(0)}}
+
+/* SECTIONS */
+section{padding:96px 56px;}
+.section-tag{font-size:11px;letter-spacing:6px;color:var(--blue);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:12px;}
+.section-tag::before{content:'';display:block;width:28px;height:1px;background:var(--blue);}
+.section-title{font-family:'Bebas Neue';font-size:clamp(44px,6vw,74px);letter-spacing:4px;color:var(--light);margin-bottom:48px;}
+
+/* MATCHES */
+#matches{background:linear-gradient(180deg,var(--deep),#0e2035);}
+.matches-list{display:flex;flex-direction:column;gap:10px;}
+.match-card{
+  background:var(--card);border:1px solid var(--border);
+  padding:20px 32px;
+  display:grid;grid-template-columns:1fr auto 1fr auto;
+  align-items:center;gap:20px;
+  opacity:0;transform:translateY(18px);
+  transition:opacity .55s,transform .55s,border-color .3s,box-shadow .3s,padding-left .3s;
+  position:relative;overflow:hidden;
+}
+.match-card.vis{opacity:1;transform:translateY(0);}
+.match-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--blue);transform:scaleY(0);transition:.4s;transform-origin:bottom;}
+.match-card:hover{border-color:rgba(27,79,138,.65);box-shadow:0 8px 36px rgba(13,27,42,.6);padding-left:40px;}
+.match-card:hover::before{transform:scaleY(1);}
+.match-team{font-family:'Bebas Neue';font-size:26px;letter-spacing:2px;}
+.match-team.home{color:var(--light);}
+.match-team.away{color:var(--light-dim);}
+.match-score{font-family:'Orbitron';font-size:26px;font-weight:900;text-align:center;color:var(--light);background:var(--blue-soft);padding:8px 18px;border:1px solid var(--border);min-width:110px;}
+.match-score.vs{font-size:14px;color:var(--light-dim);letter-spacing:4px;}
+.match-meta{font-size:13px;color:var(--light-dim);}
+.match-meta strong{color:var(--light);display:block;font-size:15px;letter-spacing:1px;}
+.badge{font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:5px 13px;white-space:nowrap;}
+.badge.win{background:rgba(30,180,80,.13);color:#40d875;border:1px solid rgba(30,180,80,.3);}
+.badge.loss{background:rgba(220,50,50,.1);color:#e06060;border:1px solid rgba(220,50,50,.25);}
+.badge.upcoming{background:rgba(27,79,138,.18);color:var(--light);border:1px solid var(--border);}
+.badge.live{background:rgba(220,50,50,.15);color:#ff7070;border:1px solid rgba(220,50,50,.3);animation:blink 1.4s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* STREAM */
+#stream-section{background:var(--deep);}
+.live-banner{
+  display:none;background:rgba(220,50,50,.07);border:1px solid rgba(220,50,50,.22);
+  padding:14px 28px;margin-bottom:18px;align-items:center;gap:14px;
+}
+.live-banner.on{display:flex;}
+.live-dot{width:9px;height:9px;background:#ff5555;border-radius:50%;animation:lpulse 1.4s infinite;}
+@keyframes lpulse{0%,100%{box-shadow:0 0 0 0 rgba(255,80,80,.5)}50%{box-shadow:0 0 0 8px rgba(255,80,80,0)}}
+.live-label{font-family:'Bebas Neue';font-size:20px;letter-spacing:3px;color:#ff7070;}
+.live-name{font-size:14px;color:var(--light-dim);letter-spacing:2px;}
+.live-score-big{margin-left:auto;font-family:'Orbitron';font-size:24px;font-weight:900;color:var(--light);display: none;}
+.stream-wrap{position:relative;background:#000;aspect-ratio:16/9;max-width:880px;border:1px solid var(--border);overflow:hidden;}
+.stream-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:radial-gradient(ellipse at center,rgba(27,79,138,.07),transparent);}
+.stream-ph-icon{font-size:68px;opacity:.15;}
+.stream-ph-text{font-family:'Bebas Neue';font-size:20px;letter-spacing:4px;color:var(--light-dim);}
+.stream-ph-sub{font-size:12px;color:rgba(232,244,253,.28);letter-spacing:1px;}
+#stream-iframe{width:100%;height:100%;border:none;display:none;}
+.stream-ctrls{margin-top:14px;display:flex;gap:10px;max-width:880px;flex-wrap:wrap;}
+.stream-input{flex:1;min-width:200px;background:var(--card);border:1px solid var(--border);padding:11px 18px;color:var(--light);font-family:'Rajdhani';font-size:15px;outline:none;transition:.3s;}
+.stream-input:focus{border-color:var(--blue);box-shadow:0 0 16px rgba(27,79,138,.2);}
+.btn{padding:11px 24px;border:none;cursor:pointer;font-family:'Bebas Neue';font-size:17px;letter-spacing:2px;transition:.3s;}
+.btn-blue{background:var(--blue);color:var(--light);clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);}
+.btn-blue:hover{background:#2260a0;box-shadow:0 0 22px var(--blue-glow);}
+.btn-red{background:rgba(220,50,50,.12);color:#e06060;border:1px solid rgba(220,50,50,.28);}
+.btn-red:hover{background:rgba(220,50,50,.22);}
+
+/* PLAYERS */
+#players{background:linear-gradient(180deg,#0e2035,var(--deep));}
+.players-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;}
+
+.player-card{
+  position:relative;overflow:hidden;
+  background:var(--card);border:1px solid var(--border);
+  height:340px;cursor:pointer;
+  transition:transform .5s cubic-bezier(.16,1,.3,1),
+             box-shadow .5s,border-color .5s,
+             height .5s cubic-bezier(.16,1,.3,1);
+}
+.player-card:hover{
+  transform:translateY(-6px) scale(1.02);
+  box-shadow:0 24px 64px rgba(13,27,42,.8),0 0 0 1px rgba(27,79,138,.55);
+  border-color:rgba(27,79,138,.65);
+  height:490px;
+}
+.player-photo{position:absolute;inset:0;background:var(--card2);overflow:hidden;}
+.player-photo img{width:100%;height:100%;object-fit:cover;object-position:top center;transition:transform .55s,filter .55s;filter:brightness(.85) saturate(.85);}
+.player-card:hover .player-photo img{transform:scale(1.06);filter:brightness(.55) saturate(.65);}
+.player-photo-ph{
+  width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  font-family:'Bebas Neue';font-size:88px;color:rgba(27,79,138,.25);
+  background:linear-gradient(145deg,#102338,#0D1B2A);letter-spacing:2px;
+}
+.player-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(13,27,42,1) 0%,rgba(13,27,42,.65) 30%,transparent 60%);
+  transition:background .5s;
+}
+.player-card:hover .player-overlay{
+  background:linear-gradient(to top,rgba(13,27,42,.98) 0%,rgba(13,27,42,.9) 40%,rgba(13,27,42,.45) 70%,transparent 100%);
+}
+.player-num-bg{
+  position:absolute;font-family:'Bebas Neue';font-size:110px;
+  color:rgba(27,79,138,.1);top:-10px;right:8px;line-height:1;
+  pointer-events:none;transition:opacity .4s;
+}
+.player-card:hover .player-num-bg{opacity:0;}
+.player-base{position:absolute;bottom:0;left:0;right:0;padding:20px 20px 16px;}
+.player-pos-badge{display:inline-block;background:var(--blue);color:var(--light);font-size:10px;letter-spacing:3px;padding:3px 10px;margin-bottom:7px;font-weight:700;}
+.player-name{font-family:'Bebas Neue';font-size:25px;letter-spacing:2px;color:var(--light);line-height:1.1;}
+.player-num-small{font-size:12px;color:var(--light-dim);letter-spacing:2px;margin-top:3px;}
+.player-hover-info{opacity:0;transform:translateY(10px);transition:opacity .4s .1s,transform .4s .1s;margin-top:14px;}
+.player-card:hover .player-hover-info{opacity:1;transform:translateY(0);}
+.player-stats-row{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+.pstat{text-align:center;min-width:42px;}
+.pstat-val{font-family:'Orbitron';font-size:14px;font-weight:700;color:var(--light);}
+.pstat-lbl{font-size:9px;letter-spacing:2px;color:var(--blue);text-transform:uppercase;margin-top:1px;}
+.circles-row{display:flex;gap:9px;flex-wrap:wrap;}
+.scircle{position:relative;width:52px;height:52px;}
+.scircle svg{transform:rotate(-90deg);}
+.sc-bg{fill:none;stroke:rgba(232,244,253,.06);stroke-width:4;}
+.sc-bar{fill:none;stroke-width:4;stroke-linecap:round;}
+.sc-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.sc-val{font-family:'Orbitron';font-size:10px;font-weight:700;}
+.sc-name{font-size:7px;color:var(--light-dim);letter-spacing:1px;text-transform:uppercase;margin-top:1px;}
+.player-bio{font-size:11px;color:var(--light-dim);letter-spacing:.8px;margin-top:8px;}
+
+/* FOOTER + COACH */
+footer{background:#07111d;border-top:1px solid var(--border);padding:44px 56px;}
+.footer-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;}
+.footer-logo{font-family:'Bebas Neue';font-size:34px;letter-spacing:6px;color:var(--light);}
+.footer-copy{font-size:12px;color:rgba(232,244,253,.22);letter-spacing:2px;margin-top:2px;}
+.coach-wrap{text-align:right;}
+.coach-label{font-size:11px;letter-spacing:3px;color:rgba(232,244,253,.2);text-transform:uppercase;margin-bottom:6px;}
+.coach-btn{background:none;border:none;color:rgba(27,79,138,.55);font-family:'Rajdhani';font-size:12px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:.3s;text-decoration:underline;text-underline-offset:4px;}
+.coach-btn:hover{color:var(--blue);}
+
+/* LOGIN OVERLAY */
+.overlay{position:fixed;inset:0;background:rgba(5,12,22,.9);backdrop-filter:blur(22px);z-index:9000;display:none;align-items:center;justify-content:center;}
+.overlay.show{display:flex;animation:ovin .4s cubic-bezier(.16,1,.3,1);}
+@keyframes ovin{0%{opacity:0}100%{opacity:1}}
+.modal{
+  background:linear-gradient(145deg,#0f2236,#0D1B2A);
+  border:1px solid rgba(27,79,138,.4);
+  padding:52px;width:100%;max-width:420px;position:relative;
+  animation:mdrop .4s cubic-bezier(.16,1,.3,1);
+}
+@keyframes mdrop{0%{opacity:0;transform:translateY(-20px)}100%{opacity:1;transform:translateY(0)}}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--blue),transparent);}
+.modal-close{position:absolute;top:16px;right:18px;background:none;border:none;color:var(--light-dim);font-size:18px;cursor:pointer;transition:.3s;}
+.modal-close:hover{color:var(--light);}
+.modal-title{font-family:'Bebas Neue';font-size:38px;letter-spacing:6px;color:var(--light);margin-bottom:4px;}
+.modal-sub{font-size:11px;letter-spacing:4px;color:var(--blue);text-transform:uppercase;margin-bottom:38px;}
+.fgroup{margin-bottom:18px;}
+.flabel{display:block;font-size:10px;letter-spacing:4px;color:var(--blue);text-transform:uppercase;margin-bottom:8px;font-weight:700;}
+.finput{width:100%;background:rgba(232,244,253,.04);border:1px solid rgba(27,79,138,.28);padding:13px 18px;color:var(--light);font-family:'Rajdhani';font-size:16px;font-weight:500;outline:none;transition:.3s;}
+.finput:focus{border-color:var(--blue);background:rgba(27,79,138,.07);box-shadow:0 0 18px rgba(27,79,138,.15);}
+.btn-login{width:100%;padding:15px;margin-top:10px;background:var(--blue);color:var(--light);border:none;font-family:'Bebas Neue';font-size:22px;letter-spacing:5px;cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:.3s;}
+.btn-login:hover{background:#2260a0;box-shadow:0 0 28px var(--blue-glow);}
+.login-err{color:#e05050;font-size:12px;letter-spacing:1px;display:none;margin-top:8px;text-align:center;}
+
+/* ADMIN PANEL */
+#admin-panel{display:none;position:fixed;inset:0;z-index:8000;background:var(--deep);overflow-y:auto;}
+#admin-panel.show{display:block;animation:panin .5s cubic-bezier(.16,1,.3,1);}
+@keyframes panin{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}
+.admin-nav{background:rgba(8,18,30,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.admin-brand{font-family:'Bebas Neue';font-size:24px;letter-spacing:5px;color:var(--light);}
+.admin-brand em{font-style:normal;font-size:10px;font-family:'Rajdhani';color:var(--blue);letter-spacing:3px;margin-left:10px;}
+.admin-tabs{display:flex;gap:2px;}
+.atab{background:none;border:none;border-bottom:2px solid transparent;padding:0 22px;height:64px;color:var(--light-dim);font-family:'Rajdhani';font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:.3s;}
+.atab.on{border-bottom-color:var(--blue);color:var(--light);}
+.atab:hover:not(.on){color:var(--light);border-bottom-color:var(--blue-soft);}
+.admin-out{background:rgba(220,50,50,.08);border:1px solid rgba(220,50,50,.2);color:#e06060;padding:8px 20px;font-family:'Rajdhani';font-size:12px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:.3s;}
+.admin-out:hover{background:rgba(220,50,50,.18);}
+.admin-body{padding:36px 40px;}
+.asec{display:none;}
+.asec.on{display:block;}
+.atoolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;}
+.atoolbar h2{font-family:'Bebas Neue';font-size:28px;letter-spacing:3px;color:var(--light);}
+.btn-add{display:flex;align-items:center;gap:8px;background:var(--blue);color:var(--light);border:none;padding:10px 22px;font-family:'Bebas Neue';font-size:17px;letter-spacing:2px;cursor:pointer;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);transition:.3s;}
+.btn-add:hover{background:#2260a0;}
+.atable{width:100%;border-collapse:collapse;background:var(--card);}
+.atable th{background:rgba(27,79,138,.1);padding:12px 18px;text-align:left;font-size:10px;letter-spacing:3px;color:var(--blue);text-transform:uppercase;border-bottom:1px solid var(--border);}
+.atable td{padding:13px 18px;border-bottom:1px solid rgba(27,79,138,.08);font-size:14px;color:var(--light-dim);transition:.2s;}
+.atable tr:hover td{background:rgba(27,79,138,.05);}
+.ae,.ad{padding:6px 14px;font-family:'Rajdhani';font-size:12px;font-weight:700;letter-spacing:1px;cursor:pointer;border:none;transition:.3s;margin:0 2px;}
+.ae{background:rgba(27,79,138,.18);color:var(--light);}
+.ae:hover{background:rgba(27,79,138,.36);}
+.ad{background:rgba(220,50,50,.1);color:#e05050;}
+.ad:hover{background:rgba(220,50,50,.22);}
+
+/* MINI MODAL */
+.moverlay{position:fixed;inset:0;background:rgba(5,12,22,.85);backdrop-filter:blur(18px);z-index:9500;display:none;align-items:center;justify-content:center;}
+.moverlay.show{display:flex;animation:ovin .3s both;}
+.mbox{background:linear-gradient(145deg,#112840,#0D1B2A);border:1px solid rgba(27,79,138,.38);padding:38px;width:100%;max-width:560px;position:relative;max-height:90vh;overflow-y:auto;}
+.mbox::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--blue),transparent);}
+.mbox-title{font-family:'Bebas Neue';font-size:26px;letter-spacing:3px;color:var(--light);margin-bottom:22px;}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.fg{margin-bottom:13px;}
+.fl{display:block;font-size:10px;letter-spacing:3px;color:var(--blue);margin-bottom:6px;text-transform:uppercase;font-weight:700;}
+.fi{width:100%;background:rgba(232,244,253,.04);border:1px solid rgba(27,79,138,.22);padding:10px 16px;color:var(--light);font-family:'Rajdhani';font-size:15px;outline:none;transition:.3s;}
+.fi:focus{border-color:var(--blue);box-shadow:0 0 14px rgba(27,79,138,.18);}
+select.fi option{background:#112840;}
+.faction{display:flex;gap:10px;margin-top:18px;}
+.btn-save{flex:1;padding:12px;background:var(--blue);color:var(--light);border:none;font-family:'Bebas Neue';font-size:18px;letter-spacing:3px;cursor:pointer;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);transition:.3s;}
+.btn-save:hover{background:#2260a0;}
+.btn-cancel{padding:12px 22px;background:rgba(232,244,253,.05);border:1px solid var(--border);color:var(--light-dim);font-family:'Rajdhani';font-size:14px;font-weight:600;cursor:pointer;transition:.3s;}
+.btn-cancel:hover{border-color:var(--light-dim);color:var(--light);}
+.photo-area{border:2px dashed var(--border);padding:18px;text-align:center;cursor:pointer;transition:.3s;}
+.photo-area:hover{border-color:var(--blue);background:rgba(27,79,138,.05);}
+.photo-area img{max-height:110px;max-width:100%;object-fit:cover;margin-bottom:6px;}
+.photo-area p{font-size:12px;color:var(--light-dim);letter-spacing:1px;}
+#photo-file-input{display:none;}
+
+/* STATS ADMIN ROW */
+.spr{background:var(--card);border:1px solid var(--border);padding:16px 22px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;transition:.3s;}
+.spr:hover{border-color:rgba(27,79,138,.55);}
+.spr-name{font-family:'Bebas Neue';font-size:19px;letter-spacing:2px;color:var(--light);}
+.spr-badge{font-size:10px;letter-spacing:2px;background:var(--blue);color:var(--light);padding:3px 10px;margin-left:8px;}
+.spr-nums{display:flex;gap:12px;flex-wrap:wrap;}
+.spr-n{font-size:12px;color:var(--light-dim);}
+.spr-n strong{color:var(--light);}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;right:28px;z-index:99999;background:var(--blue);color:var(--light);padding:12px 24px;font-family:'Bebas Neue';font-size:17px;letter-spacing:3px;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transform:translateX(220%);transition:.4s cubic-bezier(.16,1,.3,1);pointer-events:none;}
+.toast.show{transform:translateX(0);}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(22px);transition:.7s cubic-bezier(.16,1,.3,1);}
+.rv.vis{opacity:1;transform:translateY(0);}
+
+@media(max-width:768px){
+  nav,section,footer{padding-left:20px;padding-right:20px;}
+  .nav-links{display:none;}
+  section{padding-top:60px;padding-bottom:60px;}
+  .match-card{grid-template-columns:1fr 1fr;gap:10px;}
+  .admin-body{padding:18px;}
+  .frow{grid-template-columns:1fr;}
+  .hero-stats{gap:28px;}
+  .hero-stat-num{font-size:30px;}
+  .admin-tabs{flex-wrap:wrap;}
+  .atab{padding:0 14px;font-size:11px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">LIZZARD <em>BASKETBALL CLUB</em></div>
+  <div class="nav-links">
+    <a href="#hero">Главная</a>
+    <a href="#matches">Матчи</a>
+    <a href="#stream-section">Эфир</a>
+    <a href="#players">Игроки</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Профессиональный баскетбольный клуб</p>
+    <h1 class="hero-title">LIZ<span>ZAR</span>D</h1>
+    <p class="hero-sub">Страх рептилии — власть на площадке</p>
+    <div class="hero-div"></div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-num" id="st-wins">0</div><div class="hero-stat-label">Побед</div></div>
+      <div class="hero-stat"><div class="hero-stat-num" id="st-loss">0</div><div class="hero-stat-label">Поражений</div></div>
+      <div class="hero-stat"><div class="hero-stat-num" id="st-pl">0</div><div class="hero-stat-label">Игроков</div></div>
+    </div>
+    <a href="#matches" class="hero-cta">Расписание матчей</a>
+  </div>
+</section>
+
+<!-- MATCHES -->
+<section id="matches">
+  <div class="rv">
+    <p class="section-tag">Результаты и расписание</p>
+    <h2 class="section-title">МАТЧИ</h2>
+  </div>
+  <div class="matches-list" id="matches-list"></div>
+</section>
+
+<!-- STREAM -->
+<section id="stream-section">
+  <div class="rv">
+    <p class="section-tag">Прямой эфир</p>
+    <h2 class="section-title">ТРАНСЛЯЦИЯ</h2>
+  </div>
+  <div class="live-banner rv" id="live-banner">
+    <div class="live-dot"></div>
+    <span class="live-label">LIVE</span>
+    <span class="live-name" id="live-name"></span>
+    <span class="live-score-big">— : —</span>
+  </div>
+  <div class="stream-wrap rv">
+    <div class="stream-ph" id="stream-ph">
+      <div class="stream-ph-text">Трансляция не активна</div>
+      <div class="stream-ph-sub">Вставьте YouTube ссылку ниже</div>
+    </div>
+    <iframe id="stream-iframe" allowfullscreen></iframe>
+  </div>
+</section>
+
+<!-- PLAYERS -->
+<section id="players">
+  <div class="rv">
+    <p class="section-tag">Состав команды</p>
+    <h2 class="section-title">ИГРОКИ</h2>
+  </div>
+  <div class="players-grid" id="players-grid"></div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">LIZZARD</div>
+      <p class="footer-copy">© 2025 Lizzard Basketball Club. Все права защищены.</p>
+    </div>
+    <div class="coach-wrap">
+      <p class="coach-label">Вы тренер?</p>
+      <button class="coach-btn" onclick="showLogin()">→ Войти в панель управления</button>
+    </div>
+  </div>
+</footer>
+
+<!-- LOGIN -->
+<div class="overlay" id="login-ov">
+  <div class="modal">
+    <button class="modal-close" onclick="hideLogin()">✕</button>
+    <div class="modal-title">ДОСТУП</div>
+    <p class="modal-sub">Панель тренера</p>
+    <div class="fgroup">
+      <label class="flabel">Идентификатор</label>
+      <input type="text" class="finput" id="l-id" placeholder="Введите ID" autocomplete="off">
+    </div>
+    <div class="fgroup">
+      <label class="flabel">Пароль</label>
+      <input type="password" class="finput" id="l-pass" placeholder="••••••••">
+    </div>
+    <p class="login-err" id="login-err">⚠ Неверный ID или пароль</p>
+    <button class="btn-login" onclick="doLogin()">ВОЙТИ</button>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="admin-panel">
+  <div class="admin-nav">
+    <div class="admin-brand">LIZZARD <em>ADMIN</em></div>
+    <div class="admin-tabs">
+      <button class="atab on" onclick="aTab('matches')">Матчи</button>
+      <button class="atab" onclick="aTab('players')">Игроки</button>
+      <button class="atab" onclick="aTab('stats')">Статистика</button>
+      <button class="atab" onclick="aTab('stream')">Трансляция</button>
+    </div>
+    <button class="admin-out" onclick="doLogout()">⊗ Выйти</button>
+  </div>
+  <div class="admin-body">
+    <div class="asec on" id="asec-matches">
+      <div class="atoolbar"><h2>Управление матчами</h2><button class="btn-add" onclick="openMatchModal()">+ Добавить матч</button></div>
+      <table class="atable"><thead><tr><th>Дата</th><th>Соперник</th><th>Место</th><th>Счёт</th><th>Статус</th><th>Действия</th></tr></thead><tbody id="a-matches"></tbody></table>
+    </div>
+    <div class="asec" id="asec-players">
+      <div class="atoolbar"><h2>Управление игроками</h2><button class="btn-add" onclick="openPlayerModal()">+ Добавить игрока</button></div>
+      <table class="atable"><thead><tr><th>#</th><th>Фото</th><th>Имя</th><th>Позиция</th><th>Возраст</th><th>Действия</th></tr></thead><tbody id="a-players"></tbody></table>
+    </div>
+    <div class="asec" id="asec-stats">
+      <div class="atoolbar"><h2>Статистика игроков</h2></div>
+      <div id="a-stats-list"></div>
+    </div>
+    <div class="asec" id="asec-stream">
+      <div class="atoolbar"><h2>Настройки трансляции</h2></div>
+      <div style="max-width:560px">
+        <div class="fg"><label class="fl">YouTube / Stream URL</label><input type="text" class="fi" id="as-url" placeholder=""></div>
+        <div class="fg"><label class="fl">Название матча (LIVE баннер)</label><input type="text" class="fi" id="as-title" placeholder=""></div>
+        <div class="fg"><label class="fl">Статус трансляции</label>
+          <select class="fi" id="as-status"><option value="off">Выключена</option><option value="live">В эфире (LIVE)</option></select>
+        </div>
+        <button class="btn-save" style="width:auto;padding:12px 32px;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%)" onclick="saveStreamCfg()">Сохранить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MATCH MODAL -->
+<div class="moverlay" id="match-ov">
+  <div class="mbox">
+    <div class="mbox-title" id="match-ttl">Добавить матч</div>
+    <input type="hidden" id="m-eid">
+    <div class="frow">
+      <div class="fg"><label class="fl">Соперник</label><input type="text" class="fi" id="m-opp" placeholder=></div>
+      <div class="fg"><label class="fl">Дата</label><input type="date" class="fi" id="m-date"></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label class="fl">Место</label><input type="text" class="fi" id="m-place" placeholder=></div>
+      <div class="fg"><label class="fl">Статус</label>
+        <select class="fi" id="m-status"><option value="upcoming">Предстоящий</option><option value="live">Сейчас идёт</option><option value="win">Победа</option><option value="loss">Поражение</option></select>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label class="fl">Наш счёт</label><input type="number" class="fi" id="m-us" placeholder="" min="0"></div>
+      <div class="fg"><label class="fl">Счёт соперника</label><input type="number" class="fi" id="m-them" placeholder="" min="0"></div>
+    </div>
+    <div class="fg"><label class="fl">Заметка</label><input type="text" class="fi" id="m-note" placeholder=></div>
+    <div class="faction">
+      <button class="btn-save" onclick="saveMatch()">Сохранить</button>
+      <button class="btn-cancel" onclick="closeMM()">Отмена</button>
+    </div>
+  </div>
+</div>
+
+<!-- PLAYER MODAL -->
+<div class="moverlay" id="player-ov">
+  <div class="mbox">
+    <div class="mbox-title" id="player-ttl">Добавить игрока</div>
+    <input type="hidden" id="p-eid">
+    <div class="fg">
+      <label class="fl">Фото игрока</label>
+      <div class="photo-area" onclick="document.getElementById('photo-file-input').click()">
+        <div id="photo-preview">
+          <p>Нажмите чтобы выбрать фото</p>
+        </div>
+      </div>
+      <input type="file" id="photo-file-input" accept="image/*" onchange="handlePhoto(event)">
+      <input type="hidden" id="p-photo">
+    </div>
+    <div class="frow">
+      <div class="fg"><label class="fl">Имя</label><input type="text" class="fi" id="p-name" placeholder=></div>
+      <div class="fg"><label class="fl">Номер</label><input type="number" class="fi" id="p-num" placeholder="" min="0" max="99"></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label class="fl">Позиция</label>
+        <select class="fi" id="p-pos">
+          <option value="РЗ">РЗ — Разыгрывающий</option>
+          <option value="АЗ">АЗ — Атак. защитник</option>
+          <option value="ЛФ">ЛФ — Лёгкий форвард</option>
+          <option value="ТФ">ТФ — Тяж. форвард</option>
+          <option value="Ц">Ц — Центровой</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Возраст</label><input type="number" class="fi" id="p-age" placeholder="" min="15" max="50"></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label class="fl">Рост (см)</label><input type="number" class="fi" id="p-height" placeholder=""></div>
+      <div class="fg"><label class="fl">Вес (кг)</label><input type="number" class="fi" id="p-weight" placeholder=""></div>
+    </div>
+    <div class="faction">
+      <button class="btn-save" onclick="savePlayer()">Сохранить</button>
+      <button class="btn-cancel" onclick="closePM()">Отмена</button>
+    </div>
+  </div>
+</div>
+
+<!-- STATS MODAL -->
+<div class="moverlay" id="stats-ov">
+  <div class="mbox">
+    <div class="mbox-title" id="stats-ttl">Статистика</div>
+    <input type="hidden" id="s-pid">
+    <div class="frow">
+      <div class="fg"><label class="fl">Очки за игру (ОЗИ)</label><input type="number" class="fi" id="s-ppg" placeholder="" step="0.1"></div>
+      <div class="fg"><label class="fl">Подборы за игру (ПБ)</label><input type="number" class="fi" id="s-rpg" placeholder="" step="0.1"></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label class="fl">Передачи за игру (ПР)</label><input type="number" class="fi" id="s-apg" placeholder="" step="0.1"></div>
+      <div class="fg"><label class="fl">Перехваты за игру (ПХ)</label><input type="number" class="fi" id="s-spg" placeholder="" step="0.1"></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label class="fl">Блоки за игру (БЛ)</label><input type="number" class="fi" id="s-bpg" placeholder="" step="0.1"></div>
+      <div class="fg"><label class="fl">% Попаданий (ПП%)</label><input type="number" class="fi" id="s-fgp" placeholder="" min="0" max="100"></div>
+    </div>
+    <div style="margin:10px 0 6px;font-size:10px;letter-spacing:3px;color:var(--blue);text-transform:uppercase;font-weight:700">Характеристики (1–10)</div>
+    <div class="frow">
+      <div class="fg"><label class="fl">Скорость</label><input type="number" class="fi" id="s-spd" placeholder="" min="1" max="10"></div>
+      <div class="fg"><label class="fl">Сила</label><input type="number" class="fi" id="s-str" placeholder="" min="1" max="10"></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label class="fl">Дриблинг</label><input type="number" class="fi" id="s-drb" placeholder="" min="1" max="10"></div>
+      <div class="fg"><label class="fl">Защита</label><input type="number" class="fi" id="s-def" placeholder="" min="1" max="10"></div>
+    </div>
+    <div class="faction">
+      <button class="btn-save" onclick="saveStats()">Сохранить</button>
+      <button class="btn-cancel" onclick="document.getElementById('stats-ov').classList.remove('show')">Отмена</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══ DB ══ */
+const DEF={
+  matches:[
+    {id:1,opponent:"COBRA BC",date:"2025-09-15",place:"Домашний",status:"win",scoreUs:98,scoreThem:84,note:"Блестящая игра!"},
+    {id:2,opponent:"VIPER FC",date:"2025-09-22",place:"Выезд",status:"loss",scoreUs:74,scoreThem:89,note:"Тяжёлое поражение"},
+    {id:3,opponent:"DRAGON SC",date:"2025-09-28",place:"Домашний",status:"upcoming",scoreUs:0,scoreThem:0,note:"Плей-офф"},
+    {id:4,opponent:"PYTHON BC",date:"2025-10-05",place:"Выезд",status:"upcoming",scoreUs:0,scoreThem:0,note:""},
+  ],
+  players:[
+    {id:1,name:"Максим Иванов",number:7,pos:"РЗ",age:24,height:188,weight:82,photo:""},
+    {id:2,name:"Артём Козлов",number:23,pos:"ЛФ",age:26,height:200,weight:95,photo:""},
+    {id:3,name:"Данил Соколов",number:15,pos:"Ц",age:28,height:210,weight:110,photo:""},
+    {id:4,name:"Кирилл Морозов",number:33,pos:"АЗ",age:22,height:193,weight:88,photo:""},
+    {id:5,name:"Иван Лебедев",number:11,pos:"ТФ",age:25,height:204,weight:102,photo:""},
+  ],
+  stats:{
+    1:{ppg:18.5,rpg:4.2,apg:9.1,spg:1.8,bpg:0.3,fgp:48,spd:9,str:7,drb:9,def:8},
+    2:{ppg:22.3,rpg:7.8,apg:3.4,spg:1.2,bpg:1.1,fgp:52,spd:8,str:9,drb:8,def:7},
+    3:{ppg:14.1,rpg:12.5,apg:1.8,spg:0.5,bpg:2.8,fgp:58,spd:6,str:10,drb:6,def:9},
+    4:{ppg:19.7,rpg:3.9,apg:5.1,spg:2.1,bpg:0.4,fgp:45,spd:9,str:7,drb:8,def:8},
+    5:{ppg:16.4,rpg:9.2,apg:2.3,spg:0.9,bpg:1.6,fgp:50,spd:7,str:9,drb:7,def:8},
+  },
+  stream:{url:"",title:"",status:"off"},
+  nmid:5,npid:6
+};
+function gDB(){try{const r=localStorage.getItem('lz3');return r?JSON.parse(r):JSON.parse(JSON.stringify(DEF));}catch{return JSON.parse(JSON.stringify(DEF));}}
+function sDB(){localStorage.setItem('lz3',JSON.stringify(DB));}
+let DB=gDB();
+
+/* ══ REVEAL ══ */
+const ro=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>ro.observe(el));
+
+/* ══ TOAST ══ */
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+
+/* ══ HERO STATS ══ */
+function animN(el,to){let s=null;(function step(ts){if(!s)s=ts;const p=Math.min((ts-s)/1400,1);el.textContent=Math.round(p*to);if(p<1)requestAnimationFrame(step);})(performance.now());}
+function updHero(){
+  setTimeout(()=>{
+    animN(document.getElementById('st-wins'),DB.matches.filter(m=>m.status==='win').length);
+    animN(document.getElementById('st-loss'),DB.matches.filter(m=>m.status==='loss').length);
+    animN(document.getElementById('st-pl'),DB.players.length);
+  },800);
+}
+
+/* ══ FORMAT DATE ══ */
+function fDate(d){if(!d)return'';return new Date(d+'T12:00:00').toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'});}
+
+/* ══ MATCHES ══ */
+function renderMatches(){
+  const el=document.getElementById('matches-list');el.innerHTML='';
+  const sL={win:'Победа',loss:'Поражение',upcoming:'Предстоящий',live:'LIVE'};
+  [...DB.matches].sort((a,b)=>new Date(b.date)-new Date(a.date)).forEach((m,i)=>{
+    const score=m.status==='upcoming'
+      ?`<div class="match-score vs">ПРОТИВ</div>`
+      :`<div class="match-score">${m.scoreUs} : ${m.scoreThem}</div>`;
+    const card=document.createElement('div');
+    card.className='match-card';
+    card.style.transitionDelay=(i*.07)+'s';
+    card.innerHTML=`
+      <div><div class="match-team home">LIZZARD</div><div class="match-meta">${m.place}</div></div>
+      ${score}
+      <div><div class="match-team away">${m.opponent}</div><div class="match-meta"><strong>${fDate(m.date)}</strong>${m.note}</div></div>
+      <span class="badge ${m.status}">${sL[m.status]||m.status}</span>`;
+    el.appendChild(card);
+    setTimeout(()=>card.classList.add('vis'),60+i*90);
+  });
+}
+
+/* ══ STREAM ══ */
+function ytEmbed(url){
+  let id = null;
+
+  if(url.includes("youtu.be/")){
+    id = url.split("youtu.be/")[1].split(/[?&]/)[0];
+  }
+  else if(url.includes("watch?v=")){
+    id = url.split("v=")[1].split("&")[0];
+  }
+  else if(url.includes("/live/")){
+    id = url.split("/live/")[1].split(/[?&]/)[0];
+  }
+
+  if(!id) return null;
+
+  return `https://www.youtube.com/embed/${id}?autoplay=1`;
+}
+function loadStream(){
+  const u = document.getElementById('stream-url').value.trim();
+  if(u) applyStream(u);
+}
+
+function applyStream(u) {
+  const iframe = document.getElementById('stream-iframe');
+  const ph = document.getElementById('stream-ph');
+
+  const embed = ytEmbed(u);
+
+  if(!embed){
+    alert("Неверная ссылка");
+    return;
+  }
+
+  iframe.src = embed;
+  iframe.style.display = 'block';
+  ph.style.display = 'none';
+}
+function stopStream(){
+  document.getElementById('stream-iframe').src='';
+  document.getElementById('stream-iframe').style.display='none';
+  document.getElementById('stream-ph').style.display='flex';
+  document.getElementById('stream-url').value='';
+}
+function renderLiveBanner(){
+  const s=DB.stream,b=document.getElementById('live-banner');
+  if(s.status==='live'&&s.url){
+    b.classList.add('on');document.getElementById('live-name').textContent=s.title;
+    applyStream(s.url);document.getElementById('stream-url').value=s.url;
+  } else b.classList.remove('on');
+}
+
+/* ══ CIRCLE ══ */
+function circCol(v,mx){const p=v/mx;if(p>=.8)return'#4ac8ff';if(p>=.6)return'#58b0ff';if(p>=.4)return'#e8c832';if(p>=.2)return'#f08030';return'#e05050';}
+function mkCircle(lbl,v,mx,isPct){
+  const r=19,c=2*Math.PI*r,pct=Math.min(v,mx)/mx,col=circCol(v,mx);
+  const disp=isPct?v+'%':v;
+  return `<div class="scircle" title="${lbl}: ${disp}">
+    <svg width="52" height="52" viewBox="0 0 52 52">
+      <circle class="sc-bg" cx="26" cy="26" r="${r}"/>
+      <circle class="sc-bar" cx="26" cy="26" r="${r}" stroke="${col}"
+        stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${(c-pct*c).toFixed(1)}"
+        style="transition:stroke-dashoffset 1s ease .15s"/>
+    </svg>
+    <div class="sc-inner"><span class="sc-val" style="color:${col}">${disp}</span><span class="sc-name">${lbl}</span></div>
+  </div>`;
+}
+
+/* ══ PLAYERS ══ */
+function renderPlayers(){
+  const grid=document.getElementById('players-grid');grid.innerHTML='';
+  DB.players.forEach(p=>{
+    const s=DB.stats[p.id]||{ppg:0,rpg:0,apg:0,spg:0,bpg:0,fgp:0,spd:5,str:5,drb:5,def:5};
+    const photoHTML=p.photo?`<img src="${p.photo}" alt="${p.name}">`:`<div class="player-photo-ph">#${p.number}</div>`;
+    const card=document.createElement('div');
+    card.className='player-card rv';
+    card.innerHTML=`
+      <div class="player-photo">${photoHTML}</div>
+      <div class="player-overlay"></div>
+      <div class="player-num-bg">#${p.number}</div>
+      <div class="player-base">
+        <div class="player-pos-badge">${p.pos}</div>
+        <div class="player-name">${p.name}</div>
+        <div class="player-num-small">Номер ${p.number}</div>
+        <div class="player-hover-info">
+          <div class="player-stats-row">
+            <div class="pstat"><div class="pstat-val">${s.ppg}</div><div class="pstat-lbl">ОЗИ</div></div>
+            <div class="pstat"><div class="pstat-val">${s.rpg}</div><div class="pstat-lbl">ПБ</div></div>
+            <div class="pstat"><div class="pstat-val">${s.apg}</div><div class="pstat-lbl">ПР</div></div>
+            <div class="pstat"><div class="pstat-val">${s.fgp}%</div><div class="pstat-lbl">ПП%</div></div>
+          </div>
+          <div class="circles-row">
+            ${mkCircle('СКР',s.spd,10)}${mkCircle('СИЛ',s.str,10)}${mkCircle('ДРБ',s.drb,10)}${mkCircle('ЗЩТ',s.def,10)}
+          </div>
+          <div class="player-bio">${p.height} см · ${p.weight} кг · ${p.age} лет</div>
+        </div>
+      </div>`;
+    grid.appendChild(card);ro.observe(card);
+  });
+}
+
+/* ══ LOGIN ══ */
+function showLogin(){document.getElementById('login-ov').classList.add('show');}
+function hideLogin(){
+  document.getElementById('login-ov').classList.remove('show');
+  document.getElementById('login-err').style.display='none';
+  document.getElementById('l-id').value='';document.getElementById('l-pass').value='';
+}
+function doLogin(){
+  if(document.getElementById('l-id').value.trim()==='11'&&document.getElementById('l-pass').value.trim()==='22'){
+    hideLogin();document.getElementById('admin-panel').classList.add('show');
+    renderAMatches();renderAPlayers();renderAStats();loadAStream();
+  } else {
+    document.getElementById('login-err').style.display='block';
+    ['l-id','l-pass'].forEach(i=>{const el=document.getElementById(i);el.style.borderColor='#e05050';setTimeout(()=>el.style.borderColor='',1500);});
+  }
+}
+function doLogout(){document.getElementById('admin-panel').classList.remove('show');toast('Вы вышли из системы');}
+document.getElementById('l-id').addEventListener('keypress',e=>e.key==='Enter'&&doLogin());
+document.getElementById('l-pass').addEventListener('keypress',e=>e.key==='Enter'&&doLogin());
+document.getElementById('login-ov').addEventListener('click',function(e){if(e.target===this)hideLogin();});
+
+/* ══ ADMIN TABS ══ */
+function aTab(t){
+  const names=['matches','players','stats','stream'];
+  document.querySelectorAll('.atab').forEach((el,i)=>el.classList.toggle('on',names[i]===t));
+  document.querySelectorAll('.asec').forEach(el=>el.classList.remove('on'));
+  document.getElementById('asec-'+t).classList.add('on');
+}
+
+/* ══ ADMIN MATCHES ══ */
+function renderAMatches(){
+  const body=document.getElementById('a-matches');body.innerHTML='';
+  const sL={win:'Победа',loss:'Поражение',upcoming:'Предстоящий',live:'LIVE'};
+  DB.matches.forEach(m=>{
+    const sc=m.status==='upcoming'?'—':`${m.scoreUs}:${m.scoreThem}`;
+    body.innerHTML+=`<tr>
+      <td>${fDate(m.date)}</td><td><strong style="color:var(--light)">${m.opponent}</strong></td>
+      <td>${m.place}</td><td><span style="font-family:'Orbitron';color:var(--light)">${sc}</span></td>
+      <td><span class="badge ${m.status}">${sL[m.status]||m.status}</span></td>
+      <td><button class="ae" onclick="openMatchModal(${m.id})">✎ Изм.</button><button class="ad" onclick="delMatch(${m.id})">✕ Удал.</button></td></tr>`;
+  });
+}
+function openMatchModal(id){
+  document.getElementById('match-ov').classList.add('show');
+  if(id){
+    const m=DB.matches.find(x=>x.id===id);
+    document.getElementById('match-ttl').textContent='Редактировать матч';
+    document.getElementById('m-eid').value=id;
+    document.getElementById('m-opp').value=m.opponent;document.getElementById('m-date').value=m.date;
+    document.getElementById('m-place').value=m.place;document.getElementById('m-status').value=m.status;
+    document.getElementById('m-us').value=m.scoreUs;document.getElementById('m-them').value=m.scoreThem;
+    document.getElementById('m-note').value=m.note;
+  } else {
+    document.getElementById('match-ttl').textContent='Добавить матч';
+    document.getElementById('m-eid').value='';
+    ['m-opp','m-date','m-place','m-us','m-them','m-note'].forEach(i=>document.getElementById(i).value='');
+    document.getElementById('m-status').value='upcoming';
+  }
+}
+function closeMM(){document.getElementById('match-ov').classList.remove('show');}
+document.getElementById('match-ov').addEventListener('click',function(e){if(e.target===this)closeMM();});
+function saveMatch(){
+  const eid=document.getElementById('m-eid').value;
+  const o={opponent:document.getElementById('m-opp').value.trim()||'Соперник',date:document.getElementById('m-date').value,place:document.getElementById('m-place').value.trim()||'Домашний',status:document.getElementById('m-status').value,scoreUs:+document.getElementById('m-us').value||0,scoreThem:+document.getElementById('m-them').value||0,note:document.getElementById('m-note').value.trim()};
+  if(eid){const i=DB.matches.findIndex(x=>x.id===+eid);DB.matches[i]={...DB.matches[i],...o};}
+  else{o.id=DB.nmid++;DB.matches.push(o);}
+  sDB();renderAMatches();renderMatches();updHero();closeMM();toast(eid?'Матч обновлён ✓':'Матч добавлен ✓');
+}
+function delMatch(id){if(!confirm('Удалить этот матч?'))return;DB.matches=DB.matches.filter(m=>m.id!==id);sDB();renderAMatches();renderMatches();updHero();toast('Матч удалён');}
+
+/* ══ ADMIN PLAYERS ══ */
+function renderAPlayers(){
+  const body=document.getElementById('a-players');body.innerHTML='';
+  DB.players.forEach(p=>{
+    const thumb=p.photo?`<img src="${p.photo}" style="width:38px;height:38px;object-fit:cover;">`:`<div style="width:38px;height:38px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--blue)">#${p.number}</div>`;
+    body.innerHTML+=`<tr><td><strong style="color:var(--blue)">#${p.number}</strong></td><td>${thumb}</td><td><strong style="color:var(--light)">${p.name}</strong></td><td>${p.pos}</td><td>${p.age}</td><td><button class="ae" onclick="openPlayerModal(${p.id})">✎ Изм.</button><button class="ad" onclick="delPlayer(${p.id})">✕ Удал.</button></td></tr>`;
+  });
+}
+let _pp='';
+function handlePhoto(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    _pp=ev.target.result;document.getElementById('p-photo').value=ev.target.result;
+    document.getElementById('photo-preview').innerHTML=`<img src="${ev.target.result}"><p style="font-size:11px;color:var(--blue);margin-top:4px">Фото выбрано ✓</p>`;
+  };reader.readAsDataURL(file);
+}
+function openPlayerModal(id){
+  _pp='';document.getElementById('photo-file-input').value='';
+  document.getElementById('player-ov').classList.add('show');
+  if(id){
+    const p=DB.players.find(x=>x.id===id);
+    document.getElementById('player-ttl').textContent='Редактировать игрока';
+    document.getElementById('p-eid').value=id;document.getElementById('p-name').value=p.name;
+    document.getElementById('p-num').value=p.number;document.getElementById('p-pos').value=p.pos;
+    document.getElementById('p-age').value=p.age;document.getElementById('p-height').value=p.height;
+    document.getElementById('p-weight').value=p.weight;document.getElementById('p-photo').value=p.photo||'';
+    _pp=p.photo||'';
+    document.getElementById('photo-preview').innerHTML=p.photo?`<img src="${p.photo}"><p style="font-size:11px;color:var(--blue);margin-top:4px">Текущее фото</p>`:`<p>Нажмите чтобы выбрать фото</p>`;
+  } else {
+    document.getElementById('player-ttl').textContent='Добавить игрока';
+    document.getElementById('p-eid').value='';
+    ['p-name','p-num','p-age','p-height','p-weight'].forEach(i=>document.getElementById(i).value='');
+    document.getElementById('p-pos').value='РЗ';document.getElementById('p-photo').value='';
+    document.getElementById('photo-preview').innerHTML=`<p>Нажмите чтобы выбрать фото</p>`;
+  }
+}
+function closePM(){document.getElementById('player-ov').classList.remove('show');}
+document.getElementById('player-ov').addEventListener('click',function(e){if(e.target===this)closePM();});
+function savePlayer(){
+  const eid=document.getElementById('p-eid').value;
+  const o={name:document.getElementById('p-name').value.trim()||'Игрок',number:+document.getElementById('p-num').value||0,pos:document.getElementById('p-pos').value,age:+document.getElementById('p-age').value||20,height:+document.getElementById('p-height').value||190,weight:+document.getElementById('p-weight').value||85,photo:document.getElementById('p-photo').value||_pp||''};
+  if(eid){const i=DB.players.findIndex(x=>x.id===+eid);DB.players[i]={...DB.players[i],...o};}
+  else{o.id=DB.npid++;DB.players.push(o);DB.stats[o.id]={ppg:0,rpg:0,apg:0,spg:0,bpg:0,fgp:0,spd:5,str:5,drb:5,def:5};}
+  sDB();renderAPlayers();renderPlayers();renderAStats();updHero();closePM();toast(eid?'Игрок обновлён ✓':'Игрок добавлен ✓');
+}
+function delPlayer(id){if(!confirm('Удалить игрока?'))return;DB.players=DB.players.filter(p=>p.id!==id);delete DB.stats[id];sDB();renderAPlayers();renderPlayers();renderAStats();updHero();toast('Игрок удалён');}
+
+/* ══ ADMIN STATS ══ */
+function renderAStats(){
+  const c=document.getElementById('a-stats-list');c.innerHTML='';
+  DB.players.forEach(p=>{
+    const s=DB.stats[p.id]||{};
+    c.innerHTML+=`<div class="spr"><div><span class="spr-name">${p.name}</span><span class="spr-badge">${p.pos} #${p.number}</span></div><div class="spr-nums"><span class="spr-n">ОЗИ: <strong>${s.ppg||0}</strong></span><span class="spr-n">ПБ: <strong>${s.rpg||0}</strong></span><span class="spr-n">ПР: <strong>${s.apg||0}</strong></span><span class="spr-n">ПП%: <strong>${s.fgp||0}%</strong></span><span class="spr-n">СКР: <strong>${s.spd||0}</strong></span><span class="spr-n">ЗЩТ: <strong>${s.def||0}</strong></span></div><button class="ae" onclick="openStatsModal(${p.id})">✎ Заполнить</button></div>`;
+  });
+}
+function openStatsModal(pid){
+  const p=DB.players.find(x=>x.id===pid),s=DB.stats[pid]||{};
+  document.getElementById('stats-ttl').textContent=`Статистика — ${p.name}`;
+  document.getElementById('s-pid').value=pid;
+  ['ppg','rpg','apg','spg','bpg','fgp','spd','str','drb','def'].forEach(k=>{document.getElementById('s-'+k).value=s[k]||0;});
+  document.getElementById('stats-ov').classList.add('show');
+}
+function saveStats(){
+  const pid=+document.getElementById('s-pid').value;
+  const o={};['ppg','rpg','apg','spg','bpg','fgp','spd','str','drb','def'].forEach(k=>{o[k]=+document.getElementById('s-'+k).value||0;});
+  DB.stats[pid]=o;sDB();renderPlayers();renderAStats();
+  document.getElementById('stats-ov').classList.remove('show');toast('Статистика сохранена ✓');
+}
+document.getElementById('stats-ov').addEventListener('click',function(e){if(e.target===this)this.classList.remove('show');});
+
+/* ══ ADMIN STREAM ══ */
+function loadAStream(){const s=DB.stream;document.getElementById('as-url').value=s.url||'';document.getElementById('as-title').value=s.title||'';document.getElementById('as-status').value=s.status||'off';}
+function saveStreamCfg(){DB.stream={url:document.getElementById('as-url').value.trim(),title:document.getElementById('as-title').value.trim(),status:document.getElementById('as-status').value};sDB();renderLiveBanner();toast('Настройки трансляции сохранены ✓');}
+
+/* ══ INIT ══ */
+renderMatches();renderPlayers();updHero();renderLiveBanner();
+</script>
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAXK8UvmUyiczFyVyPyw0857XUwNuyHY9g",
+  authDomain: "bassketball-site-23d1d.firebaseapp.com",
+  projectId: "bassketball-site-23d1d",
+  storageBucket: "bassketball-site-23d1d.firebasestorage.app",
+  messagingSenderId: "55807405730",
+  appId: "1:55807405730:web:ebcf1e938a1b836c4db1fb"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function loadStreamFromDB(){
+  const ref = doc(db, "stream", "main");
+  const snap = await getDoc(ref);
+
+  if(snap.exists()){
+    const data = snap.data();
+
+    if(data.url){
+      applyStream(data.url);
+      document.getElementById('live-name').textContent = data.title || '';
+
+      if(data.status === 'live'){
+        document.getElementById('live-banner').classList.add('on');
+      }
+    }
+  }
+}
+
+loadStreamFromDB();
+
+</script>
+</body>
+</html>
