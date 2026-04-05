@@ -934,10 +934,10 @@ async function saveStreamCfg(){
 
     loadStreamFromDB();
 
-    window.showToast("Стрим обновлён", "success");
+    showToast("Стрим обновлён", "success");
 
   } catch(e){
-    window.showToast("Ошибка сохранения", "error");
+    showToast("Ошибка сохранения", "error");
     console.error(e);
   }
 }
@@ -948,17 +948,7 @@ renderMatches();renderPlayers();updHero();renderLiveBanner();
 </script>
 <script type="module">
 
-window.showToast = function(text, type="success"){
-  const t = document.getElementById("toast");
-  if(!t) return;
 
-  t.textContent = text;
-  t.className = "toast show " + type;
-
-  setTimeout(()=>{
-    t.className = "toast";
-  }, 2500);
-}
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";;
 import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -999,6 +989,19 @@ async function loadStreamFromDB(){
 
 loadStreamFromDB();
 
+</script>
+<script>
+function showToast(text, type="success"){
+  const t = document.getElementById("toast");
+  if(!t) return;
+
+  t.textContent = text;
+  t.className = "toast show " + type;
+
+  setTimeout(()=>{
+    t.className = "toast";
+  }, 2500);
+}
 </script>
 <div id="toast" class="toast"></div>
 </body>
