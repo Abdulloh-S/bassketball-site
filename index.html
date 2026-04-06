@@ -985,8 +985,8 @@ onAuthStateChanged(auth, (user)=>{
 
 // 🔥 логин
 window.loginAdmin = async function(){
-  const email = document.getElementById('l-id').value;
-  const pass = document.getElementById('l-pass').value;
+  const email = document.getElementById('l-id').value.trim();
+  const pass = document.getElementById('l-pass').value.trim();
 
   try{
     await signInWithEmailAndPassword(auth, email, pass);
