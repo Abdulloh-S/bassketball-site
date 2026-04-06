@@ -926,7 +926,7 @@ function loadAStream(){const s=DB.stream;document.getElementById('as-url').value
 renderMatches();renderPlayers();updHero();renderLiveBanner();
 </script>
 <script type="module">
-
+console.log("MODULE START");
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -943,7 +943,7 @@ window.showToast = function(text, type="success"){
     t.className = "toast";
   }, 2500);
 }
-
+console.log("TOAST READY");
 // 🔥 Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyAXK8UvmUyiczFyVyPyw0857XUwNuyHY9g",
