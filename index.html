@@ -993,7 +993,7 @@ window.loginAdmin = async function(){
     window.showToast("Вход выполнен", "success");
   }catch(e){
     console.error(e);
-    window.showToast("Ошибка входа", "error");
+    window.showToast(e.message, "error");
   }
 }
 
