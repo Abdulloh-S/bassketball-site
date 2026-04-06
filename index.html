@@ -721,11 +721,23 @@ function stopStream(){
   document.getElementById('stream-url').value='';
 }
 function renderLiveBanner(){
-  const s=DB.stream,b=document.getElementById('live-banner');
-  if(s.status==='live'&&s.url){
-    b.classList.add('on');document.getElementById('live-name').textContent=s.title;
-    applyStream(s.url);document.getElementById('stream-url').value=s.url;
-  } else b.classList.remove('on');
+  const s = DB.stream;
+  const b = document.getElementById('live-banner');
+
+  if(s.status === 'live' && s.url){
+    if(b) b.classList.add('on');
+
+    const nameEl = document.getElementById('live-name');
+    if(nameEl) nameEl.textContent = s.title;
+
+    applyStream(s.url);
+
+    const urlEl = document.getElementById('stream-url');
+    if(urlEl) urlEl.value = s.url;
+
+  } else {
+    if(b) b.classList.remove('on');
+  }
 }
 
 /* ══ CIRCLE ══ */
@@ -1007,10 +1019,7 @@ async function loadStreamFromDB(){
 
 // 🔥 сохранение (ТОЛЬКО если залогинен)
 async function saveStreamCfg(){
-  if(!isAdmin){
-    window.showToast("Сначала войди", "error");
-    return;
-  }
+ 
 
   try{
     const url = document.getElementById('as-url').value;
