@@ -978,10 +978,10 @@ window.loginAdmin = async function(){
 
   try{
     await signInWithEmailAndPassword(auth, email, pass);
-    showToast("Вход выполнен", "success");
+    window.showToast("Вход выполнен", "success");
   }catch(e){
     console.error(e);
-    showToast("Ошибка входа", "error");
+    window.showToast("Ошибка входа", "error");
   }
 }
 
@@ -1012,7 +1012,7 @@ async function loadStreamFromDB(){
 // 🔥 сохранение (ТОЛЬКО если залогинен)
 async function saveStreamCfg(){
   if(!isAdmin){
-    showToast("Сначала войди", "error");
+    window.showToast("Сначала войди", "error");
     return;
   }
 
@@ -1029,11 +1029,11 @@ async function saveStreamCfg(){
 
     await loadStreamFromDB();
 
-    showToast("Стрим обновлён", "success");
+    window.showToast("Стрим обновлён", "success");
 
   }catch(e){
     console.error(e);
-    showToast(e.message, "error");
+    window.showToast(e.message, "error");
   }
 }
 
