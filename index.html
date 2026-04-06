@@ -932,7 +932,7 @@ import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/fireb
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 // 🔥 Toast (глобально)
-function showToast(text, type="success"){
+window.showToast = function(text, type="success"){
   const t = document.getElementById("toast");
   if(!t) return;
 
