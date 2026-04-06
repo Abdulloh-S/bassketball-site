@@ -1040,9 +1040,16 @@ window.saveStreamCfg = saveStreamCfg;
 loadStreamFromDB();
 
 </script>
-<div style="margin:20px 0;">
-  <input id="l-id" placeholder="Email" style="padding:8px;">
-  <input id="l-pass" type="password" placeholder="Пароль" style="padding:8px;">
+<div style="
+position: fixed;
+top: 20px;
+right: 20px;
+z-index: 999999;
+background: #000;
+padding: 10px;
+">
+  <input id="l-id" placeholder="Email">
+  <input id="l-pass" type="password" placeholder="Пароль">
   <button onclick="loginAdmin()">Войти</button>
 </div>
 <div id="toast" class="toast"></div>
