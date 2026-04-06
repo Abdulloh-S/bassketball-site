@@ -985,11 +985,7 @@ window.loginAdmin = async function(){
   }
 }
 
-<div style="margin:20px 0;">
-  <input id="l-id" placeholder="Email" style="padding:8px;">
-  <input id="l-pass" type="password" placeholder="Пароль" style="padding:8px;">
-  <button onclick="loginAdmin()">Войти</button>
-</div>
+
 // 🔥 загрузка стрима
 async function loadStreamFromDB(){
   const ref = doc(db, "stream", "main");
@@ -1044,6 +1040,11 @@ window.saveStreamCfg = saveStreamCfg;
 loadStreamFromDB();
 
 </script>
+<div style="margin:20px 0;">
+  <input id="l-id" placeholder="Email" style="padding:8px;">
+  <input id="l-pass" type="password" placeholder="Пароль" style="padding:8px;">
+  <button onclick="loginAdmin()">Войти</button>
+</div>
 <div id="toast" class="toast"></div>
 </body>
 </html>
